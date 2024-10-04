@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Perguntas e Respostas: Cultura Oceânica</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0043c0, #02e1ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .quiz-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            width: 400px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #005f73;
+        }
+
+        #question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #023047;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn {
+            background-color: #219ebc;
+            color: white;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ffb703;
+        }
+
+        .btn.correct {
+            background-color: #8bc34a;
+            animation: correctAnswer 0.5s ease;
+        }
+
+        .btn.wrong {
+            background-color: #ef233c;
+            animation: wrongAnswer 0.5s ease;
+        }
+
+        #next-btn {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #00b4d8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+            transition: background-color 0.3s ease;
+        }
+
+        #next-btn:hover {
+            background-color: #0077b6;
+        }
+
+        #score {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #023047;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes correctAnswer {
+            from { background-color: #8bc34a; transform: scale(1); }
+            to { background-color: #4caf50; transform: scale(1.05); }
+        }
+
+        @keyframes wrongAnswer {
+            from { background-color: #ef233c; transform: scale(1); }
+            to { background-color: #d90429; transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Cultura Oceânica</h1>
+        <div id="question-container">
+            <p id="question">Pergunta será exibida aqui</p>
+            <div id="answer-buttons" class="btn-container">
+                <button class="btn">Resposta 1</button>
+                <button class="btn">Resposta 2</button>
+                <button class="btn">Resposta 3</button>
+                <button class="btn">Resposta 4</button>
+            </div>
+        </div>
+        <button id="next-btn" class="next-btn">Próxima</button>
+        <p id="score">Pontuação: 0</p>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Qual é uma das principais ameaças à vida marinha?",
+                answers: [
+                    { text: "A) Poluição plástica", correct: true },
+                    { text: "B) Crescimento da população humana", correct: false },
+                    { text: "C) Turismo sustentável", correct: false },
+                    { text: "D) Pesca excessiva", correct: false }
+                ]
+            },
+            {
+                question: "Qual é a melhor maneira de reduzir a poluição nos oceanos?",
+                answers: [
+                    { text: "A) Usar mais plástico", correct: false },
+                    { text: "B) Reduzir o uso de produtos descartáveis e reciclar", correct: true },
+                    { text: "C) Lavar roupas com água quente", correct: false },
+                    { text: "D) Ignorar o problema", correct: false }
+                ]
+            },
+            {
+                question: "O que os recifes de corais fazem para o meio ambiente?",
+                answers: [
+                    { text: "A) São apenas atrativos turísticos", correct: false },
+                    { text: "B) São prejudiciais ao ecossistema marinho", correct: false },
+                    { text: "C) Não têm importância ecológica", correct: false },
+                    { text: "D) Proporcionam abrigo e alimento para muitas espécies marinhas", correct: true }
+                ]
+            },
+            {
+                question: "Qual é uma maneira eficaz de educar as pessoas sobre a conservação oceânica?",
+                answers: [
+                    { text: "A) Ignorar o assunto", correct: false },
+                    { text: "B) Proibir a natação em oceanos", correct: false },
+                    { text: "C) Fazer festas na praia", correct: false },
+                    { text: "D) Promover campanhas de conscientização e educação ambiental", correct: true }
+                ]
+            },
+            {
+                question: "Qual é a maior barreira de corais do mundo?",
+                answers: [
+                    { text: "A) Barreira de Corais do México", correct: false },
+                    { text: "B) Grande Barreira de Corais", correct: true },
+                    { text: "C) Corais da Indonésia", correct: false },
+                    { text: "D) Barreira de Corais do Caribe", correct: false }
+                ]
+            },
+            {
+                question: "O que é a acidificação dos oceanos?",
+                answers: [
+                    { text: "A) Aumento da temperatura dos oceanos", correct: false },
+                    { text: "B) Diminuição da biodiversidade marinha", correct: false },
+                    { text: "C) Aumento da acidez da água do mar devido à absorção de CO₂", correct: true },
+                    { text: "D) Melhoria da qualidade da água", correct: false }
+                ]
+            },
+            {
+                question: "Qual é uma prática sustentável que pode ajudar a proteger os oceanos?",
+                answers: [
+                    { text: "A) Pesca excessiva", correct: false },
+                    { text: "B) Uso de defensivos agrícolas", correct: false },
+                    { text: "C) Aquicultura responsável", correct: true },
+                    { text: "D) Desmatamento de áreas costeiras", correct: false }
+                ]
+            },
+            {
+                question: "Qual é uma consequência da poluição nos oceanos?",
+                answers: [
+                    { text: "A) Melhoria da vida marinha", correct: false },
+                    { text: "B) Eutrofização", correct: true },
+                    { text: "C) Aumento da pesca sustentável", correct: false },
+                    { text: "D) Nenhuma consequência", correct: false }
+                ]
+            },
+            {
+                question: "Qual é uma maneira de reduzir o consumo de plástico?",
+                answers: [
+                    { text: "A) Usar sacolas plásticas descartáveis", correct: false },
+                    { text: "B) Optar por produtos embalados em plástico", correct: false },
+                    { text: "C) Usar canudos de papel ou reutilizáveis", correct: true },
+                    { text: "D) Ignorar o problema", correct: false }
+                ]
+            },
+            {
+                question: "Por que a preservação dos manguezais é importante?",
+                answers: [
+                    { text: "A) Eles são apenas um tipo de árvore", correct: false },
+                    { text: "B) Eles protegem as costas contra erosão e oferecem habitat para diversas espécies", correct: true },
+                    { text: "C) Eles não têm valor ecológico", correct: false },
+                    { text: "D) Eles são bons apenas para o turismo", correct: false }
+                ]
+            },
+            {
+                question: "Como o plástico afeta a vida marinha?",
+                answers: [
+                    { text: "A) Não tem efeito significativo", correct: false },
+                    { text: "B) Proporciona habitat para algumas espécies", correct: false },
+                    { text: "C) Causa sufocamento e ingestão por animais marinhos", correct: true },
+                    { text: "D) Aumenta a biodiversidade", correct: false }
+                ]
+            }
+        ];
+
+        const questionElement = document.getElementById('question');
+        const answerButtonsElement = document.getElementById('answer-buttons');
+        const nextButton = document.getElementById('next-btn');
+        const scoreElement = document.getElementById('score');
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function startGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            nextButton.innerText = 'Próxima';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            const currentQuestion = questions[currentQuestionIndex];
+            questionElement.innerText = currentQuestion.question;
+
+            currentQuestion.answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.innerText = answer.text;
+                button.classList.add('btn');
+                button.addEventListener('click', () => selectAnswer(button, answer.correct));
+                answerButtonsElement.appendChild(button);
+            });
+        }
+
+        function resetState() {
+            nextButton.style.display = 'none';
+            while (answerButtonsElement.firstChild) {
+                answerButtonsElement.removeChild(answerButtonsElement.firstChild);
+            }
+        }
+
+        function selectAnswer(selectedButton, correct) {
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => button.disabled = true); // Desativa os botões após a seleção
+
+            if (correct) {
+                selectedButton.classList.add('correct');
+                score++;
+                scoreElement.innerText = `Pontuação: ${score}`;
+            } else {
+                selectedButton.classList.add('wrong');
+            }
+
+            nextButton.style.display = 'block';
+        }
+
+        nextButton.addEventListener('click', () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showScore();
+            }
+        });
+
+        function showScore() {
+            resetState();
+            questionElement.innerText = `Você terminou o quiz! Sua pontuação final foi: ${score}`;
+            nextButton.innerText = 'Jogar Novamente';
+            nextButton.style.display = 'block';
+            nextButton.addEventListener('click', startGame);
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
